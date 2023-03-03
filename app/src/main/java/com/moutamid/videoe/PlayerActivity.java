@@ -1,6 +1,10 @@
 package com.moutamid.videoe;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,6 +43,7 @@ public class PlayerActivity extends AppCompatActivity {
     // creating a variable for exoplayer
     SimpleExoPlayer exoPlayer;
     MediaSource mediaSource;
+    BootReceiver bootUpReceiver = new BootReceiver();
     // url of video which we are loading.
     String videoURL = "https://stream.dxbh.net/AWR360Iloilo";
     @Override
@@ -47,6 +52,8 @@ public class PlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_player);
         checkApp(this);
         exoPlayerView = findViewById(R.id.idExoPlayerVIew);
+
+        Log.d("checking12", "Hello");
         try {
             BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
 
@@ -134,6 +141,13 @@ public class PlayerActivity extends AppCompatActivity {
 
         }).start();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(Intent.ACTION_BOOT_COMPLETED);
+        registerReceiver(bootUpReceiver, filter);
     }
 
 }
