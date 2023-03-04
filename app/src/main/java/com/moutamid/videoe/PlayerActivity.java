@@ -43,7 +43,7 @@ public class PlayerActivity extends AppCompatActivity {
     // creating a variable for exoplayer
     SimpleExoPlayer exoPlayer;
     MediaSource mediaSource;
-    BootReceiver bootUpReceiver = new BootReceiver();
+    BootReceiver bootUpReceiver;
     // url of video which we are loading.
     String videoURL = "https://stream.dxbh.net/AWR360Iloilo";
     @Override
@@ -52,7 +52,7 @@ public class PlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_player);
         checkApp(this);
         exoPlayerView = findViewById(R.id.idExoPlayerVIew);
-
+        bootUpReceiver = new BootReceiver();
         Log.d("checking12", "Hello");
         try {
             BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
