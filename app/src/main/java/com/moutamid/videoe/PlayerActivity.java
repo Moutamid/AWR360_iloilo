@@ -39,8 +39,6 @@ import java.net.URL;
 
 public class PlayerActivity extends AppCompatActivity {
     SimpleExoPlayerView exoPlayerView;
-
-    // creating a variable for exoplayer
     SimpleExoPlayer exoPlayer;
     MediaSource mediaSource;
     BootReceiver bootUpReceiver;
@@ -141,6 +139,18 @@ public class PlayerActivity extends AppCompatActivity {
 
         }).start();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        exoPlayer.stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        exoPlayer.stop();
     }
 
     @Override
