@@ -48,7 +48,7 @@ public class PlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-        checkApp(this);
+        //checkApp(this);
         exoPlayerView = findViewById(R.id.idExoPlayerVIew);
         bootUpReceiver = new BootReceiver();
         Log.d("checking12", "Hello");
@@ -142,6 +142,12 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         exoPlayer.stop();
@@ -156,6 +162,9 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        if (!exoPlayer.getPlayWhenReady()){
+            checkApp(PlayerActivity.this);
+        }
         IntentFilter filter = new IntentFilter(Intent.ACTION_BOOT_COMPLETED);
         registerReceiver(bootUpReceiver, filter);
     }
