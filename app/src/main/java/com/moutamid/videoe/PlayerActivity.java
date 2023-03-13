@@ -2,12 +2,14 @@ package com.moutamid.videoe;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -41,6 +43,7 @@ public class PlayerActivity extends AppCompatActivity {
     SimpleExoPlayerView exoPlayerView;
     SimpleExoPlayer exoPlayer;
     MediaSource mediaSource;
+    ProgressDialog progressDialog;
     BootReceiver bootUpReceiver;
     // url of video which we are loading.
     String videoURL = "https://stream.dxbh.net/AWR360Iloilo";
@@ -48,10 +51,21 @@ public class PlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-        //checkApp(this);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Starting Stream");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        checkApp(this);
         exoPlayerView = findViewById(R.id.idExoPlayerVIew);
         bootUpReceiver = new BootReceiver();
         Log.d("checking12", "Hello");
+
+        new Handler().postDelayed(() -> {
+            if (!exoPlayer.getPlayWhenReady()){
+                checkApp(PlayerActivity.this);
+            }
+        }, 10000);
+
         try {
             BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
 
@@ -126,9 +140,16 @@ public class PlayerActivity extends AppCompatActivity {
                     });
                 } else {
                    try {
-                       exoPlayer.prepare(mediaSource);
-                       exoPlayer.setPlayWhenReady(true);
+                       activity.runOnUiThread(() -> {
+                           progressDialog.dismiss();
+                           exoPlayer.prepare(mediaSource);
+                           exoPlayer.setPlayWhenReady(true);
+                       });
+
                    } catch (Exception e){
+                       activity.runOnUiThread(() -> {
+                           Toast.makeText(activity, "Error " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                       });
                        Log.e("TAG", "Error : " + e.toString());
                    }
                 }
@@ -144,6 +165,7 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
     }
 
 
@@ -162,9 +184,8 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        checkApp(PlayerActivity.this);
-        IntentFilter filter = new IntentFilter(Intent.ACTION_BOOT_COMPLETED);
-        registerReceiver(bootUpReceiver, filter);
+//        IntentFilter filter = new IntentFilter(Intent.ACTION_BOOT_COMPLETED);
+//        registerReceiver(bootUpReceiver, filter);
     }
 
 }
