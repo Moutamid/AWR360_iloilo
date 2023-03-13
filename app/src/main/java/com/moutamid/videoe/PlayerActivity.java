@@ -162,9 +162,7 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (!exoPlayer.getPlayWhenReady()){
-            checkApp(PlayerActivity.this);
-        }
+        checkApp(PlayerActivity.this);
         IntentFilter filter = new IntentFilter(Intent.ACTION_BOOT_COMPLETED);
         registerReceiver(bootUpReceiver, filter);
     }
