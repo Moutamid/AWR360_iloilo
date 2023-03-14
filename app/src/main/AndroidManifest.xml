@@ -24,7 +24,6 @@
             android:name=".PlayerActivity"
             android:banner="@drawable/ic_logo"
             android:launchMode="singleTask"
-            android:stateNotNeeded="true"
             android:exported="true">
 
             <intent-filter>
