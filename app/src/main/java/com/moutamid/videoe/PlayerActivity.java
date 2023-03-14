@@ -108,7 +108,9 @@ public class PlayerActivity extends AppCompatActivity {
             StringBuffer stringBuffer = new StringBuffer();
             while (true) {
                 try {
-                    if ((input = in != null ? in.readLine() : null) == null) break;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        if ((input = in != null ? in.readLine() : null) == null) break;
+                    }
                 } catch (final IOException e) {
                     e.printStackTrace();
                 }
