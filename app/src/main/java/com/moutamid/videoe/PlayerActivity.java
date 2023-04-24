@@ -156,6 +156,19 @@ public class PlayerActivity extends AppCompatActivity {
 
             } catch (JSONException e) {
                 e.printStackTrace();
+                try {
+                    activity.runOnUiThread(() -> {
+                        progressDialog.dismiss();
+                        exoPlayer.prepare(mediaSource);
+                        exoPlayer.setPlayWhenReady(true);
+                    });
+
+                } catch (Exception ee){
+                    activity.runOnUiThread(() -> {
+                        Toast.makeText(activity, "Error " + ee.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    });
+                    Log.e("TAG", "Error : " + ee.toString());
+                }
             }
 
         }).start();
